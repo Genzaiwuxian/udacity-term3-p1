@@ -262,11 +262,12 @@ int main() {
             bool car_righ = false;
 			double check_car_speed = 0.0; // same lane frontal car speed
 
-			vector<string> states;
-			states = successor_states(state);
-			for (int i = 0; i < states.size(); ++i)
+			helper helper;
+			vector<string> poss_succ_states;
+			poss_succ_states = helper.successor_states(state,lane);
+			for (int i = 0; i < poss_succ_states.size(); ++i)
 			{
-				cout << "states " << i << ": " << states[i] << endl;
+				cout << "states " << i << ": " << poss_succ_states[i] << endl;
 			}
 
 
