@@ -206,7 +206,7 @@ int main() {
   double ref_vel = 0.0; // mph
 
   //initial state.
-  string state = "KL";
+  //string state = "KL";
 
   h.onMessage([&ref_vel, &lane, &map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy]
     (uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
@@ -264,7 +264,7 @@ int main() {
 
 			helper helper;
 			vector<string> poss_succ_states;
-			poss_succ_states = helper.successor_states(state,lane);
+			poss_succ_states = helper.successor_states("KL",lane);
 			for (int i = 0; i < poss_succ_states.size(); ++i)
 			{
 				cout << "states " << i << ": " << poss_succ_states[i] << endl;
