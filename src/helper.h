@@ -10,7 +10,7 @@ using std::string;
 class helper
 {
 public:
-	vector<string> successor_state(string state,int lane);
+	vector<string> successor_states(string state,int lane);
 
 	
 
