@@ -9,6 +9,8 @@
 #include "Eigen-3.3/Eigen/QR"
 #include "json.hpp"
 #include "spline.h"
+#include "vehicle.h"
+#include <vector>
 
 using namespace std;
 
@@ -203,6 +205,9 @@ int main() {
   // Reference velocity.
   double ref_vel = 0.0; // mph
 
+  //initial state.
+  string state = "KL";
+
   h.onMessage([&ref_vel, &lane, &map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy]
     (uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
 
@@ -255,8 +260,16 @@ int main() {
             bool car_ahead = false;
             bool car_left = false;
             bool car_righ = false;
+			double check_car_speed = 0.0; // same lane frontal car speed
 
-			double check_car_speed = 0.0;
+			vector<string> states;
+			states = successor_states(state);
+			for (int i = 0; i < states.size(); ++i)
+			{
+				cout << "states " << i << ": " << states[i] << endl;
+			}
+
+
 
             for ( int i = 0; i < sensor_fusion.size(); i++ ) {
                 float d = sensor_fusion[i][6];
@@ -316,7 +329,7 @@ int main() {
               } 
 			  else 
 			  {
-				  if (check_car_speed < (car_speed*0.447))
+				  if (check_car_speed < (car_speed*0.447)) //only decrease when velocity is less than front car
 				  {
 					  speed_diff -= MAX_ACC;
 				  }
