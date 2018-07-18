@@ -316,7 +316,7 @@ int main() {
               } 
 			  else 
 			  {
-				  if (check_car_speed < (car_speed/0.447))
+				  if (check_car_speed < (car_speed*0.447))
 				  {
 					  speed_diff -= MAX_ACC;
 				  }
