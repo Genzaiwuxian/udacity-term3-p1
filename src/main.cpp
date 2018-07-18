@@ -181,11 +181,11 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 	double ref_y = car_y;
 	double ref_yaw = deg2rad(car_yaw);
 
-	cout << ref_x << endl;
+	cout << "ref_x: "<<ref_x << endl;
 
 	int prev_size = previous_path_x.size();
 
-	cout << prev_size << endl;
+	cout << "prev_size: "<<prev_size << endl;
 
 	// check previous points
 	if (prev_size < 2) {
@@ -228,7 +228,7 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 	ptsy.push_back(next_wp1[1]);
 	ptsy.push_back(next_wp2[1]);
 
-	cout << "next_wp0" << next_wp0[0] << endl;
+	cout << "next_wp0: " << next_wp0[0] << endl;
 
 	// Making coordinates to local car coordinates.
 	for (int i = 0; i < ptsx.size(); i++) {
@@ -258,7 +258,7 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 
 	double x_add_on = 0;
 
-	cout << "x_add_on"<<x_add_on << endl;
+	cout << "x_add_on: "<<x_add_on << endl;
 
 	for (int i = 1; i < 50 - prev_size; i++) {
 		ref_vel += speed_diff;
@@ -285,15 +285,25 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 		x_point += ref_x;
 		y_point += ref_y;
 
-		cout << i << "x_point" << x_point << endl;
+		cout << i << " x_point: " << x_point << endl;
 
 		next_x_vals.push_back(x_point);
 		next_y_vals.push_back(y_point);
 	}
 
+	for (int i = 0; i < next_x_vals.size(); ++i)
+	{
+		cout << i << " next_x_vals: " << next_x_vals[i] << endl;
+	}
+
 	next_way_points *result;
 	result->next_x = next_x_vals;
 	result->next_y = next_y_vals;
+
+	for (int i = 0; i < result->next_x.size(); ++i)
+	{
+		cout << i << " next_x: " << result->next_x[i] << endl;
+	}
 
 	return result;
 }
@@ -648,8 +658,12 @@ int main() {
 
             json msgJson;
 
+			cout << "OK0" << endl;
+
           	msgJson["next_x"] = result_tragectory->next_x;
           	msgJson["next_y"] = result_tragectory->next_y;
+
+			cout << "OK1" << endl;
 
           	auto msg = "42[\"control\","+ msgJson.dump()+"]";
 
