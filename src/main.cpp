@@ -181,7 +181,11 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 	double ref_y = car_y;
 	double ref_yaw = deg2rad(car_yaw);
 
+	cout << ref_x << endl;
+
 	int prev_size = previous_path_x.size();
+
+	cout << prev_size << endl;
 
 	// check previous points
 	if (prev_size < 2) {
@@ -224,6 +228,8 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 	ptsy.push_back(next_wp1[1]);
 	ptsy.push_back(next_wp2[1]);
 
+	cout << "next_wp0" << next_wp0[0] << endl;
+
 	// Making coordinates to local car coordinates.
 	for (int i = 0; i < ptsx.size(); i++) {
 		double shift_x = ptsx[i] - ref_x;
@@ -252,6 +258,8 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 
 	double x_add_on = 0;
 
+	cout << "x_add_on"<<x_add_on << endl;
+
 	for (int i = 1; i < 50 - prev_size; i++) {
 		ref_vel += speed_diff;
 		if (ref_vel > MAX_SPEED)
@@ -276,6 +284,8 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 
 		x_point += ref_x;
 		y_point += ref_y;
+
+		cout << i << "x_point" << x_point << endl;
 
 		next_x_vals.push_back(x_point);
 		next_y_vals.push_back(y_point);
