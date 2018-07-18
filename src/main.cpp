@@ -443,10 +443,7 @@ int main() {
 			
 			
 
-			for (int i = 0; i < states.size(); ++i)
-			{
-				cout << "states " << i << ": " << states[i] << endl;
-			}
+
 
 
             for ( int i = 0; i < sensor_fusion.size(); i++ ) {
@@ -529,7 +526,7 @@ int main() {
             }
 
 			next_way_points *result_tragectory;
-			result_tragectory=tragectory_generator(current_state, lane, car_x, car_y, car_s, car_yaw, previous_path_x, previous_path_y, map_waypoints_s, map_waypoints_x, map_waypoints_y, ref_vel, speed_diff, MAX_SPEED, MAX_ACC)
+			result_tragectory = tragectory_generator(current_state, lane, car_x, car_y, car_s, car_yaw, previous_path_x, previous_path_y, map_waypoints_s, map_waypoints_x, map_waypoints_y, ref_vel, speed_diff, MAX_SPEED, MAX_ACC);
 
 			/*
 			vector<double> ptsx;
