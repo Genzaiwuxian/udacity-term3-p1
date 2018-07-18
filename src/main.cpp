@@ -171,7 +171,7 @@ struct next_way_points
 	vector<double> next_y;
 };
 
-next_way_points *tragectory_generator(string state,int lane, double car_x,double car_y,double car_s,double car_yaw, auto previous_path_x, auto previous_path_y, vector<double> map_waypoints_s, vector<double> map_waypoints_x, vector<double> map_waypoints_y, double ref_vel, double speed_diff, const double MAX_SPEED, const double MAX_ACC)
+next_way_points *tragectory_generator(string state,int lane, double car_x,double car_y,double car_s,double car_yaw, vector<double> previous_path_x, vector<double> previous_path_y, vector<double> map_waypoints_s, vector<double> map_waypoints_x, vector<double> map_waypoints_y, double ref_vel, double speed_diff, const double MAX_SPEED, const double MAX_ACC)
 {
 	
 	vector<double> ptsx;
@@ -529,7 +529,7 @@ int main() {
             }
 
 			next_way_points *result_tragectory;
-			result_tragectory=tragectory_generator(string state, int lane, double car_x, double car_y, double car_s, double car_yaw, auto previous_path_x, auto previous_path_y, vector<double> map_waypoints_s, vector<double> map_waypoints_x, vector<double> map_waypoints_y, double ref_vel, double speed_diff, const double MAX_SPEED, const double MAX_ACC)
+			result_tragectory=tragectory_generator(current_state, lane, car_x, car_y, car_s, car_yaw, previous_path_x, previous_path_y, map_waypoints_s, map_waypoints_x, map_waypoints_y, ref_vel, speed_diff, MAX_SPEED, MAX_ACC)
 
 			/*
 			vector<double> ptsx;
