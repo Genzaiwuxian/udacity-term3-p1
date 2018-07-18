@@ -9,7 +9,6 @@
 #include "Eigen-3.3/Eigen/QR"
 #include "json.hpp"
 #include "spline.h"
-#include "helper.h"
 #include <vector>
 
 using namespace std;
@@ -206,7 +205,7 @@ int main() {
   double ref_vel = 0.0; // mph
 
   //initial state.
-  //string state = "KL";
+  string state = "KL";
 
   h.onMessage([&ref_vel, &lane, &map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy]
     (uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
@@ -262,6 +261,7 @@ int main() {
             bool car_righ = false;
 			double check_car_speed = 0.0; // same lane frontal car speed
 
+			/*
 			helper helper;
 			vector<string> poss_succ_states;
 			poss_succ_states = helper.successor_states("KL",lane);
@@ -269,7 +269,38 @@ int main() {
 			{
 				cout << "states " << i << ": " << poss_succ_states[i] << endl;
 			}
+			*/
+			
+			successor_states(string state, int lane)
+			{
+				vector<string> states;
+				states.push_back("KL");
+				if (state.compare("KL") == 0) {
+					states.push_back("PLCL");
+					states.push_back("PLCR");
+				}
+				else if (state.compare("PLCL") == 0) {
+					if (lane == 1 || lane == 2) {
+						states.push_back("PLCL");
+						states.push_back("LCL");
+					}
+				}
+				else if (state.compare("PLCR") == 0) {
+					if (lane == 0 || lane == 1) {
+						states.push_back("PLCR");
+						states.push_back("LCR");
+					}
+				}
+				//If state is "LCL" or "LCR", then just return "KL"
+				return states;
+			}
 
+			vector<string> poss_succ_states;
+			poss_succ_states = successor_states(state, lane);
+			for (int i = 0; i < poss_succ_states.size(); ++i)
+			{
+				cout << "states " << i << ": " << poss_succ_states[i] << endl;
+			}
 
 
             for ( int i = 0; i < sensor_fusion.size(); i++ ) {
