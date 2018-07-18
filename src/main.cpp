@@ -205,7 +205,8 @@ int main() {
   double ref_vel = 0.0; // mph
 
   //initial state.
-  string state = "KL";
+  string current_state = "KL";
+
 
   h.onMessage([&ref_vel, &lane, &map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy]
     (uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
@@ -274,17 +275,17 @@ int main() {
 			//check possibile successor states
 			vector<string> states;
 			states.push_back("KL");
-			if (state.compare("KL") == 0) {
+			if (current_state.compare("KL") == 0) {
 				states.push_back("PLCL");
 				states.push_back("PLCR");
 			}
-			else if (state.compare("PLCL") == 0) {
+			else if (current_state.compare("PLCL") == 0) {
 				if (lane == 1 || lane == 2) {
 					states.push_back("PLCL");
 					states.push_back("LCL");
 				}
 			}
-			else if (state.compare("PLCR") == 0) {
+			else if (current_state.compare("PLCR") == 0) {
 				if (lane == 0 || lane == 1) {
 					states.push_back("PLCR");
 					states.push_back("LCR");
