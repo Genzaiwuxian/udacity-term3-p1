@@ -545,8 +545,7 @@ int main() {
               }
             }
 
-			next_way_points *result_tragectory;
-			result_tragectory = tragectory_generator(current_state, lane, car_x, car_y, car_s, car_yaw, previous_path_x, previous_path_y, map_waypoints_s, map_waypoints_x, map_waypoints_y, ref_vel, speed_diff, MAX_SPEED, MAX_ACC);
+			next_way_points *result_tragectory= tragectory_generator(current_state, lane, car_x, car_y, car_s, car_yaw, previous_path_x, previous_path_y, map_waypoints_s, map_waypoints_x, map_waypoints_y, ref_vel, speed_diff, MAX_SPEED, MAX_ACC);
 
 			
 			cout << "OK" << endl;
