@@ -271,35 +271,29 @@ int main() {
 			}
 			*/
 			
-			successor_states(string state, int lane)
-			{
-				vector<string> states;
-				states.push_back("KL");
-				if (state.compare("KL") == 0) {
+			//check possibile successor states
+			vector<string> states;
+			states.push_back("KL");
+			if (state.compare("KL") == 0) {
+				states.push_back("PLCL");
+				states.push_back("PLCR");
+			}
+			else if (state.compare("PLCL") == 0) {
+				if (lane == 1 || lane == 2) {
 					states.push_back("PLCL");
+					states.push_back("LCL");
+				}
+			}
+			else if (state.compare("PLCR") == 0) {
+				if (lane == 0 || lane == 1) {
 					states.push_back("PLCR");
+					states.push_back("LCR");
 				}
-				else if (state.compare("PLCL") == 0) {
-					if (lane == 1 || lane == 2) {
-						states.push_back("PLCL");
-						states.push_back("LCL");
-					}
-				}
-				else if (state.compare("PLCR") == 0) {
-					if (lane == 0 || lane == 1) {
-						states.push_back("PLCR");
-						states.push_back("LCR");
-					}
-				}
-				//If state is "LCL" or "LCR", then just return "KL"
-				return states;
 			}
 
-			vector<string> poss_succ_states;
-			poss_succ_states = successor_states(state, lane);
-			for (int i = 0; i < poss_succ_states.size(); ++i)
+			for (int i = 0; i < states.size(); ++i)
 			{
-				cout << "states " << i << ": " << poss_succ_states[i] << endl;
+				cout << "states " << i << ": " << states[i] << endl;
 			}
 
 
