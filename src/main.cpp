@@ -171,7 +171,7 @@ struct next_way_points
 	vector<double> next_y;
 };
 
-next_way_points *tragectory_generator(string state,int lane, double car_x,double car_y,double car_s,double car_yaw, vector<double> previous_path_x, vector<double> previous_path_y, vector<double> map_waypoints_s, vector<double> map_waypoints_x, vector<double> map_waypoints_y, double ref_vel, double speed_diff, const double MAX_SPEED, const double MAX_ACC)
+next_way_points tragectory_generator(string state,int lane, double car_x,double car_y,double car_s,double car_yaw, vector<double> previous_path_x, vector<double> previous_path_y, vector<double> map_waypoints_s, vector<double> map_waypoints_x, vector<double> map_waypoints_y, double ref_vel, double speed_diff, const double MAX_SPEED, const double MAX_ACC)
 {
 	
 	vector<double> ptsx;
@@ -296,13 +296,13 @@ next_way_points *tragectory_generator(string state,int lane, double car_x,double
 		cout << i << " next_x_vals: " << next_x_vals[i] << endl;
 	}
 
-	next_way_points *result;
-	result->next_x = next_x_vals;
-	result->next_y = next_y_vals;
+	next_way_points result;
+	result.next_x = next_x_vals;
+	result.next_y = next_y_vals;
 
-	for (int i = 0; i < result->next_x.size(); ++i)
+	for (int i = 0; i < result.next_x.size(); ++i)
 	{
-		cout << i << " next_x: " << result->next_x[i] << endl;
+		cout << i << " next_x: " << result.next_x[i] << endl;
 	}
 
 	return result;
@@ -545,7 +545,7 @@ int main() {
               }
             }
 
-			next_way_points *result_tragectory= tragectory_generator(current_state, lane, car_x, car_y, car_s, car_yaw, previous_path_x, previous_path_y, map_waypoints_s, map_waypoints_x, map_waypoints_y, ref_vel, speed_diff, MAX_SPEED, MAX_ACC);
+			next_way_points result_tragectory= tragectory_generator(current_state, lane, car_x, car_y, car_s, car_yaw, previous_path_x, previous_path_y, map_waypoints_s, map_waypoints_x, map_waypoints_y, ref_vel, speed_diff, MAX_SPEED, MAX_ACC);
 
 			
 			cout << "OK" << endl;
@@ -554,8 +554,8 @@ int main() {
 
 			cout << "OK0" << endl;
 
-          	msgJson["next_x"] = result_tragectory->next_x;
-          	msgJson["next_y"] = result_tragectory->next_y;
+          	msgJson["next_x"] = result_tragectory.next_x;
+          	msgJson["next_y"] = result_tragectory.next_y;
 
 			cout << "OK1" << endl;
 
