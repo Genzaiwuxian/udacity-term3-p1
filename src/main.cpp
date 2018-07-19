@@ -303,6 +303,8 @@ int main() {
 					check_result = (check_car_s > car_s && check_car_s - car_s < 30);
 					car_ahead = check_result;
 					check_car_speed = check_speed;
+					cout << "check_result" << check_result << endl;
+					cout << "car_ahead" << car_ahead << endl;
 				}
 				else if (check_car_lane - lane == -1) // left lane
 				{
