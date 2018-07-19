@@ -252,12 +252,11 @@ int main() {
             // Provided previous path point size.
             int prev_size = previous_path_x.size();
 
-            // Preventing collitions.
             if (prev_size > 0) {
               car_s = end_path_s;
             }
 
-            // Prediction : Analysing other cars positions.
+            // check whether there are any vehicles in the road around ego car
             bool car_ahead = false;  // check wheter car front
 			bool car_left = false;  // check whether car left, avoid collision
             bool car_left_ahead = false;  // for cost calculation of left ahead car
@@ -297,12 +296,12 @@ int main() {
 				double check_car_vy = sensor_fusion[i][4];
 				double check_speed = sqrt(check_car_vx*check_car_vx + check_car_vy * check_car_vy);
 				double check_car_s = sensor_fusion[i][5];
-				check_car_s += ((double)prev_size*0.02*check_speed); //prediction for furutre s
+				check_car_s += ((double)prev_size*0.02*check_speed); //prediction for furutre s of chekcing car
 
-				//output next state
+				//a flag for store check result
 				bool check_result=false;
 
-				if (check_car_lane == lane) // same lane
+				if (check_car_lane == lane) // in the same lane
 				{
 					check_result = (check_car_s > car_s && check_car_s - car_s < 30);
 					if (check_result == 1)
@@ -320,7 +319,7 @@ int main() {
 					}
 
 					check_result = false;
-					check_result = (car_s + 60 > check_car_s);
+					check_result = (car_s + 60 > check_car_s); //want vehicle see far away for left car, set distance=60, it's a twist value
 					if (check_result == 1)
 					{
 						car_left_ahead = true;
@@ -343,7 +342,7 @@ int main() {
 					
 					check_result = false;
 
-					check_result = (car_s + 60 > check_car_s);
+					check_result = (car_s + 60 > check_car_s); //want vehicle see far away for right car, set distance=60, it's a twist value
 					if (check_result == 1)
 					{
 						car_righ_ahead = true;
@@ -359,12 +358,12 @@ int main() {
 				}
 			}
 
-			// Behavior : Let's see what to do.
+			// the following code is learning from the class
 			double speed_diff = 0;
 			const double MAX_SPEED = 49.5;
 			const double MAX_ACC = .224;
 			if (car_ahead)
-			{ // Car ahead
+			{ 
 				double cost_CL = 0.0; // costs for left change
 				double cost_RC = 0.0; // costs for right change
 
@@ -446,9 +445,8 @@ int main() {
             double ref_y = car_y;
             double ref_yaw = deg2rad(car_yaw);
 
-            // Do I have have previous points
+
             if ( prev_size < 2 ) {
-                // There are not too many...
                 double prev_car_x = car_x - cos(car_yaw);
                 double prev_car_y = car_y - sin(car_yaw);
 
@@ -458,7 +456,6 @@ int main() {
                 ptsy.push_back(prev_car_y);
                 ptsy.push_back(car_y);
             } else {
-                // Use the last two points.
                 ref_x = previous_path_x[prev_size - 1];
                 ref_y = previous_path_y[prev_size - 1];
 
@@ -473,7 +470,6 @@ int main() {
                 ptsy.push_back(ref_y);
             }
 
-            // Setting up target points in the future.
             vector<double> next_wp0 = getXY(car_s + 30, 2 + 4*lane, map_waypoints_s, map_waypoints_x, map_waypoints_y);
             vector<double> next_wp1 = getXY(car_s + 60, 2 + 4*lane, map_waypoints_s, map_waypoints_x, map_waypoints_y);
             vector<double> next_wp2 = getXY(car_s + 90, 2 + 4*lane, map_waypoints_s, map_waypoints_x, map_waypoints_y);
@@ -486,7 +482,6 @@ int main() {
             ptsy.push_back(next_wp1[1]);
             ptsy.push_back(next_wp2[1]);
 
-            // Making coordinates to local car coordinates.
             for ( int i = 0; i < ptsx.size(); i++ ) {
               double shift_x = ptsx[i] - ref_x;
               double shift_y = ptsy[i] - ref_y;
@@ -495,11 +490,9 @@ int main() {
               ptsy[i] = shift_x * sin(0 - ref_yaw) + shift_y * cos(0 - ref_yaw);
             }
 
-            // Create the spline.
             tk::spline s;
             s.set_points(ptsx, ptsy);
 
-            // Output path points from previous path for continuity.
           	vector<double> next_x_vals;
           	vector<double> next_y_vals;
             for ( int i = 0; i < prev_size; i++ ) {
@@ -507,7 +500,6 @@ int main() {
               next_y_vals.push_back(previous_path_y[i]);
             }
 
-            // Calculate distance y position on 30 m ahead.
             double target_x = 30.0;
             double target_y = s(target_x);
             double target_dist = sqrt(target_x*target_x + target_y*target_y);
