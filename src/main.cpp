@@ -205,7 +205,7 @@ int main() {
   double ref_vel = 0.0; // mph
 
   //current state.
-  string current_state="KL"
+  string current_state = "KL";
 
   h.onMessage([&current_state,&ref_vel, &lane, &map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy]
     (uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
