@@ -258,9 +258,13 @@ int main() {
             }
 
             // Prediction : Analysing other cars positions.
-            bool car_ahead = false;
-            bool car_left = false;
-            bool car_righ = false;
+            bool car_ahead = false;  // check wheter car front
+			bool car_left = false;  // check whether car left, avoid collision
+            bool car_left_ahead = false;  // for cost calculation of left ahead car
+			bool car_left_behi = false;   // for cost calculation of left behind car
+			bool car_righ = false;  // check whether car right, avoid collision
+            bool car_righ_ahead = false; // for cost calculation of right ahead car
+			bool car_righ_behi = false;  // for cost calcuation of right behind car
 
 			double check_car_speed = 0.0; // check frontal vehicle speed,smooth EGO car velocity
 
@@ -309,6 +313,20 @@ int main() {
 				}
 				else if (check_car_lane - lane == -1) // left lane
 				{
+					check_result = (car_s - 40 < check_car_s);
+					if (check_result == 1)
+					{
+						car_left_behi = true;
+					}
+
+					check_result = false;
+					check_result = (car_s + 60 > check_car_s);
+					if (check_result == 1)
+					{
+						car_left_ahead = true;
+					}
+
+					check_result = false;
 					check_result = (car_s - 30 < check_car_s && car_s + 30 > check_car_s);
 					if (check_result == 1)
 					{
@@ -317,6 +335,22 @@ int main() {
 				}
 				else if (check_car_lane - lane == 1)  // right lane
 				{
+					check_result = (car_s - 40 < check_car_s);
+					if (check_result == 1)
+					{
+						car_righ_behi = true;
+					}
+					
+					check_result = false;
+
+					check_result = (car_s + 60 > check_car_s);
+					if (check_result == 1)
+					{
+						car_righ_ahead = true;
+					}
+
+					check_result = false;
+
 					check_result = (car_s - 30 < check_car_s && car_s + 30 > check_car_s);
 					if (check_result == 1)
 					{
@@ -331,23 +365,64 @@ int main() {
 			const double MAX_ACC = .224;
 			if (car_ahead)
 			{ // Car ahead
-				if (!car_left && lane > 0)
+				double cost_CL = 0.0; // costs for left change
+				double cost_RC = 0.0; // costs for right change
+
+				if (car_left_ahead)
 				{
-					// if there is no car left and there is a left lane.
-					lane--; // Change lane left.
+					cost_CL += 3;
 				}
-				else if (!car_righ && lane != 2)
+				if (car_left_behi)
 				{
-					// if there is no car right and there is a right lane.
-					lane++; // Change lane right.
+					cost_CL += 1;
 				}
-				else
+				if (car_righ_ahead)
 				{
-					if (check_car_speed < car_speed)
+					cost_RC += 3;
+				}
+				if (car_righ_behi)
+				{
+					cost_RC += 1;
+				}
+				
+
+				if (cost_CL <= cost_RC)  //perfer change left lane, and perfer left change during cost equals.
+				{
+					if (!car_left && lane > 0)
 					{
-						speed_diff -= MAX_ACC;
+						lane--; // Change left lane
+					}
+					else if (!car_righ && lane != 2)
+					{
+						lane++; // Change lane right.
+					}
+					else
+					{
+						if (check_car_speed < car_speed)
+						{
+							speed_diff -= MAX_ACC;
+						}
 					}
 				}
+				else // perfer change right lane
+				{
+					if (!car_righ && lane != 2)
+					{
+						lane++;  // change right lane.
+					}
+					if (!car_left && lane > 0)
+					{
+						lane--; // Change left lane
+					}
+					else
+					{
+						if (check_car_speed < car_speed)
+						{
+							speed_diff -= MAX_ACC;
+						}
+					}
+				}
+
 			}
 			else
 			{
