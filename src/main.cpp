@@ -301,20 +301,27 @@ int main() {
 				if (check_car_lane == lane) // same lane
 				{
 					check_result = (check_car_s > car_s && check_car_s - car_s < 30);
-					car_ahead = check_result;
-					check_car_speed = check_speed;
-					cout << "check_result" << check_result << endl;
-					cout << "car_ahead" << car_ahead << endl;
+					if (check_result == 1)
+					{
+						car_ahead = true;
+						check_car_speed = check_speed;
+					}
 				}
 				else if (check_car_lane - lane == -1) // left lane
 				{
 					check_result = (car_s - 30 < check_car_s && car_s + 30 > check_car_s);
-					car_left = check_result;
+					if (check_result == 1)
+					{
+						car_left = true;
+					}
 				}
 				else if (check_car_lane - lane == 1)  // right lane
 				{
 					check_result = (car_s - 30 < check_car_s && car_s + 30 > check_car_s);
-					car_righ = check_result;
+					if (check_result == 1)
+					{
+						car_righ = true;
+					}
 				}
 			}
 
