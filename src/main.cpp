@@ -291,7 +291,7 @@ int main() {
 				// check frontal car speed & Frent_s, avoid collision
 				double check_car_vx = sensor_fusion[i][3];
 				double check_car_vy = sensor_fusion[i][4];
-				double check_speed = sqrt(vx*vx + vy * vy);
+				double check_speed = sqrt(check_car_vx*check_car_vx + check_car_vy * check_car_vy);
 				double check_car_s = sensor_fusion[i][5];
 				check_car_s += ((double)prev_size*0.02*check_speed); //prediction for furutre s
 
